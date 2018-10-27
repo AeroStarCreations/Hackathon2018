@@ -22,6 +22,10 @@ settings =
 		{
             "com.android.vending.CHECK_LICENSE",
 			"android.permission.INTERNET",
+			-- Permission to retrieve current location from the GPS
+            "android.permission.ACCESS_FINE_LOCATION",
+            -- Permission to retrieve current location from WiFi or cellular service
+            "android.permission.ACCESS_COARSE_LOCATION",
 		},
 		facebookAppId = "844579549077658",
 		useGoogleServicesJson = true,
@@ -59,7 +63,9 @@ settings =
                 "fbauth2",
                 "fb-messenger-api",
                 "fbshareextension"
-            },
+			},
+			NSLocationAlwaysUsageDescription = "This app would like to use location services.",
+            NSLocationWhenInUseUsageDescription = "This app would like to use location services.",
 		},
 	},
 
