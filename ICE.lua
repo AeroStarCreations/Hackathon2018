@@ -61,7 +61,6 @@ function scene:show( event )
 
         local addButton = widget.newButton({
             id = "addButton",
-            fillColor = { default={ 138, 43, 226 }, over={ 138, 43, 226 } },
             x = w / 2,
             y = h * .8,
             width = w/1.4,
@@ -70,6 +69,7 @@ function scene:show( event )
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
+            fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
             labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
             onEvent = handleButtonEvent,
             --onRelease = btnPressed
