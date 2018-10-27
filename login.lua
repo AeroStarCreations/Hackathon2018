@@ -35,6 +35,7 @@ local function handleButtonEvent( event )
                 localData.setPassword(password.text)
                 localData.setUsername(username.text)
                 localData.setRegistered(true)
+                composer.gotoScene("home")
             end
             native.setKeyboardFocus( nil )
         elseif (event.target.id == "back") then
@@ -93,6 +94,7 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen)
  
     elseif ( phase == "did" ) then
+
         -- Code here runs when the scene is entirely on screen
         username = native.newTextField(w/2, h * .1, w/1.4, h/20)
         username.placeholder = "(Username)"
@@ -124,6 +126,11 @@ function scene:show( event )
             cornerRadius = username.height * 2 / 3,
             onEvent = handleButtonEvent,
         })
+
+        sceneGroup:insert( username )
+        sceneGroup:insert( password )
+        sceneGroup:insert( loginButton )
+        
     end
 end
  
@@ -138,6 +145,9 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen)
  
     elseif ( phase == "did" ) then
+        password:removeSelf()
+        username:removeSelf()
+        displayName:removeSelf()
         -- Code here runs immediately after the scene goes entirely off screen
  
     end

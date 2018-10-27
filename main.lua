@@ -12,6 +12,7 @@ local localData = require("localData")
 ----
 -- Local data
 ----
+localData.resetAuthData()
 localData.initAuthData()
 -- localData.setRegistered( false ) -- delete once ready
 

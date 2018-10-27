@@ -22,7 +22,7 @@ local function handleButtonEvent( event )
     if (event.phase == "ended") then
         if (event.target.id == "safeButton") then
             --event.target.labelColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } }
-            
+            gamesparks.setStatus(1)
             
         elseif (event.target.id == "back") then
             composer.gotoScene( composer.getSceneName( "previous" ))
