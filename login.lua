@@ -1,6 +1,8 @@
 --File to create the scene for the login screen
 local composer = require( "composer" )
 local widget = require( "widget" )
+local localData = require("localData")
+local gamesparks = require("gamesparks")
 local scene = composer.newScene()
  
 -- -----------------------------------------------------------------------------------
@@ -25,12 +27,23 @@ local function handleButtonEvent( event )
                 --infoClear()
                 --infoUpdate( "Must fill all fields" )
             else 
-                gamesparks.loginWithUsernameAndPassword( 
+                if localData.isRegistered then
+                    print("Is Registered")
+                    gamesparks.loginWithUsernameAndPassword( 
+                    username.text,
+                    password.text
+                    )
+
+                else
+                    print("Is Not Registered")
+                    gamesparks.registerWithUsernameAndPassword(
                     displayName.text,
                     username.text, 
                     password.text
-                    
-                )
+                    )
+                    localData.setPassword(password.text)
+                    localData.setUsername(username.text)
+                end
             end
             native.setKeyboardFocus( nil )
         elseif (event.target.id == "back") then
@@ -53,7 +66,7 @@ local function inputListener( event )
         if ("submitted" == event.phase or "ended" == event.phase) then
             --infoUpdate("password submitted")
             native.setKeyboardFocus( nil )
-            handleButtonEvent({phase="ended", target={id="login"}})
+            --handleButtonEvent({phase="ended", target={id="login"}})
         end
     elseif ("displayName" == event.target.id) then
         --infoUpdate("displayName")
@@ -108,7 +121,7 @@ function scene:show( event )
         password:addEventListener( "userInput", inputListener )
  
 
-        local button1 = widget.newButton({
+        local loginButton = widget.newButton({
             id = "login",
             x = w / 2,
             y = h * .4,
