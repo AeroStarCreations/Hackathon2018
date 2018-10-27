@@ -30,19 +30,20 @@ local function handleButtonEvent( event )
                 if localData.isRegistered then
                     print("Is Registered")
                     gamesparks.loginWithUsernameAndPassword( 
-                    username.text,
-                    password.text
+                        username.text,
+                        password.text
                     )
 
                 else
                     print("Is Not Registered")
                     gamesparks.registerWithUsernameAndPassword(
-                    displayName.text,
-                    username.text, 
-                    password.text
+                        displayName.text,
+                        username.text, 
+                        password.text
                     )
                     localData.setPassword(password.text)
                     localData.setUsername(username.text)
+                    localData.setRegistered()
                 end
             end
             native.setKeyboardFocus( nil )
