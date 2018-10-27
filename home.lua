@@ -17,12 +17,6 @@ local username
 local password
 local displayName
 
-local function btnPressed( event )
-    local btn = event.target  
-    btn:setFillColor( 0,0,1 )
-    print("YO I'M HERE")
-end
-
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
         print("First Condition")
@@ -33,9 +27,9 @@ local function handleButtonEvent( event )
         elseif (event.target.id == "notSafeButton") then
             print("That's Not Safe")
             gamesparks.setStatus(-1)
-        elseif (event.target.id == "back") then
-            composer.gotoScene( composer.getSceneName( "previous" ))
-        
+        elseif (event.target.id == "ICEButton") then
+            print("Opening ICE List")
+            composer.gotoScene("ICE")
         end
         print(event.target.id .. " button pressed")
     elseif (event.phase == "began") then
@@ -94,7 +88,7 @@ function scene:show( event )
         local notSafeButton = widget.newButton({
             id = "notSafeButton",
             x = w / 2,
-            y = h * .2,
+            y = h * .25,
             width = w/1.4,
             height = 2 * (h/20),
             label = "I'M NOT SAFE",
@@ -107,6 +101,25 @@ function scene:show( event )
             --onRelease = btnPressed
         })
 
+        local ICEButton = widget.newButton({
+            id = "ICEButton",
+            x = w / 2,
+            y = h * .6,
+            width = w/1.4,
+            height = 2 * (h/10),
+            label = "ICE",
+            fontSize = h/20,
+            shape = "roundedRect",
+            cornerRadius = (h/20) * 2 / 3,
+            onEvent = handleButtonEvent,
+            fillColor = { default={ 100, 100, 100 }, over={ 100, 100, 100 } },
+            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            --onRelease = btnPressed
+        })
+
+        sceneGroup:insert( safeButton )
+        sceneGroup:insert( notSafeButton )
+        sceneGroup:insert( ICEButton )
         --safeButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
 end
