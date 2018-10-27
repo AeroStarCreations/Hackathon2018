@@ -64,7 +64,7 @@ local function availabilityCallback( isAvailable )
     print( TAG, "Availability=" .. tostring(isAvailable) )
 
     if isAvailable then
-        -- createAccountDetailsRequest()
+        createAccountDetailsRequest()
     end
 end
 
