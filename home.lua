@@ -27,10 +27,12 @@ local function handleButtonEvent( event )
     if (event.phase == "ended") then
         print("First Condition")
         if (event.target.id == "safeButton") then
-            print("ENDEDED")
-            event.target:setFillColor(0,200,0)
-            --gamesparks.setStatus(1)
+            print("I Am Safe")
+            gamesparks.setStatus(1)
             
+        elseif (event.target.id == "notSafeButton") then
+            print("That's Not Safe")
+            gamesparks.setStatus(-1)
         elseif (event.target.id == "back") then
             composer.gotoScene( composer.getSceneName( "previous" ))
         
@@ -85,6 +87,22 @@ function scene:show( event )
             cornerRadius = (h/20) * 2 / 3,
             onEvent = handleButtonEvent,
             fillColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } },
+            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            --onRelease = btnPressed
+        })
+
+        local notSafeButton = widget.newButton({
+            id = "notSafeButton",
+            x = w / 2,
+            y = h * .2,
+            width = w/1.4,
+            height = 2 * (h/20),
+            label = "I'M NOT SAFE",
+            fontSize = h/20,
+            shape = "roundedRect",
+            cornerRadius = (h/20) * 2 / 3,
+            onEvent = handleButtonEvent,
+            fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
             labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
             --onRelease = btnPressed
         })
