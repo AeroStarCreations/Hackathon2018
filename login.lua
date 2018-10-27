@@ -9,7 +9,10 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
  
  
- 
+local w = display.actualContentWidth
+local h = display.actualContentHeight
+local username
+local password
  
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -35,6 +38,16 @@ function scene:show( event )
  
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
+        username = native.newTextField(w/2, h/(3+1), w/1.4, h/20)
+        username.placeholder = "(Username)"
+        username.id = "username"
+        --username:addEventListener( "userInput", inputListener )
+
+        password = native.newTextField(w/2, 2 * username.y, w/1.4, h/20)
+        password.placeholder = "(Password)"
+        password.id = "password"
+        password.isSecure = true
+        --password:addEventListener( "userInput", inputListener )
  
     end
 end
