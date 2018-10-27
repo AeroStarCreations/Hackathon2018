@@ -43,6 +43,7 @@ local function handleButtonEvent( event )
                     )
                     localData.setPassword(password.text)
                     localData.setUsername(username.text)
+                    localData.setRegistered(true)
                 end
             end
             native.setKeyboardFocus( nil )
