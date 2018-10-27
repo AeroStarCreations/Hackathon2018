@@ -1,0 +1,113 @@
+--
+-- For more information on build.settings, see the Project Build Settings guide at:
+-- https://docs.coronalabs.com/guide/distribution/buildSettings
+--
+
+settings =
+{
+	orientation =
+	{
+		-- Supported values for orientation:
+		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
+		default = "portrait",
+		supported = { "portrait", },
+	},
+
+	--
+	-- Android section
+	--
+	android =
+	{
+		usesPermissions =
+		{
+            "com.android.vending.CHECK_LICENSE",
+			"android.permission.INTERNET",
+		},
+		facebookAppId = "844579549077658",
+		useGoogleServicesJson = true,
+        googlePlayGamesAppId = "115097124972", --make sure this is correct before release
+	},
+
+	--
+	-- iOS section
+	--
+	iphone =
+	{
+		xcassets = "Images.xcassets",
+		plist =
+		{
+			UIStatusBarHidden = true,
+			UILaunchStoryboardName = "LaunchScreen",
+			UIApplicationExitsOnSuspend = false,
+            FacebookAppID = "844579549077658",  
+            CFBundleURLTypes =
+            {
+                { 
+					CFBundleURLSchemes = 
+					{ 
+						"fb844579549077658", 
+						"com.googleusercontent.apps.635193827138-8q04oidpj9a0rj81bvm8o5fd8caq04cv",
+						-- "com.googleusercontent.apps.115097124972-do7jf9p04sgnshlosto6a2kqsaoq03d1",
+					} 
+				}
+            },
+            -- Whitelist Facebook apps
+            LSApplicationQueriesSchemes =
+            {
+                "fb",  -- Needed for the facebook-v4a.isFacebookAppEnabled() API
+                "fbapi",
+                "fbauth2",
+                "fb-messenger-api",
+                "fbshareextension"
+            },
+		},
+	},
+
+	--
+	-- Plugins section
+	--
+	plugins =
+	{
+		["plugin.bit"] =
+      	{
+        	publisherId = "com.coronalabs",
+        	supportedPlatforms = { iphone=true, android=true, }
+      	},
+      	["plugin.openssl"] =
+      	{	
+        publisherId = "com.coronalabs",
+        	supportedPlatforms = { iphone=true, android=true, }
+      	},
+      	["plugin.gamesparks"] =
+      	{
+        	publisherId = "com.gamesparks",
+      	},
+	  	["plugin.facebook.v4a"] =
+        {
+            publisherId = "com.coronalabs"
+		},
+		["plugin.googleSignIn"] = 
+		{
+			publisherId = "tech.scotth"
+		},
+		["CoronaProvider.gameNetwork.apple"] =
+        {
+            publisherId = "com.coronalabs"
+		},
+		["plugin.idVerifySig"] =
+		{
+			publisherId = "com.cabagomez",
+			supportedPlatforms = { iphone=true }
+		}
+	},
+
+	--
+	-- Project section
+	--
+	excludeFiles =
+	{
+		-- Exclude unnecessary files for each platform
+		all = { "Icon.png", "Icon-*dpi.png", "Images.xcassets", },
+		android = { "LaunchScreen.storyboardc", },
+	},
+}
