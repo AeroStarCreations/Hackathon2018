@@ -17,17 +17,28 @@ local username
 local password
 local displayName
 
+local function btnPressed( event )
+    local btn = event.target  
+    btn:setFillColor( 0,0,1 )
+    print("YO I'M HERE")
+end
 
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
+        print("First Condition")
         if (event.target.id == "safeButton") then
-            --event.target.labelColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } }
-            gamesparks.setStatus(1)
+            print("ENDEDED")
+            event.target:setFillColor(0,200,0)
+            --gamesparks.setStatus(1)
             
         elseif (event.target.id == "back") then
             composer.gotoScene( composer.getSceneName( "previous" ))
+        
         end
         print(event.target.id .. " button pressed")
+    elseif (event.phase == "began") then
+        event.target:setFillColor(0,0,1)
+        print("begin")
     end
 end
 
@@ -74,10 +85,11 @@ function scene:show( event )
             cornerRadius = (h/20) * 2 / 3,
             onEvent = handleButtonEvent,
             fillColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } }
+            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            --onRelease = btnPressed
         })
 
-        safeButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
+        --safeButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
 end
  
