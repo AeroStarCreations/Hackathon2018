@@ -105,7 +105,7 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         username = native.newTextField(w/2, h * .1, w/1.4, h/20)
-        username.placeholder = "(HackySackChamps)"
+        username.placeholder = "(Username)"
         username.id = "username"
         username:addEventListener( "userInput", inputListener )
 
