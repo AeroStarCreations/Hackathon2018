@@ -16,8 +16,16 @@ local h = display.actualContentHeight
 local contactName
 local contactNumber
 
+local function isValidNumber(x)
+    local answer = false;
+    print("The length of the number is" .. string.len(x))
+    if string.len(x) >= 10 then
+        answer = true
+    end
+    return answer
+end
+
 local function handleButtonEvent( event )
-    print("Its working dog")
     if (event.phase == "ended") then
         if (event.target.id == "addButton") then
             if (contactName.text == nil or contactName.text == "" or
@@ -26,11 +34,16 @@ local function handleButtonEvent( event )
                 --infoClear()
                 --infoUpdate( "Must fill all fields" )
             else 
-                gamesparks.addICEContact(
+                if(isValidNumber(contactNumber.text)) then
+                    gamesparks.addICEContact(
                     contactName.text,
                     contactNumber.text
-                )
-                composer.gotoScene("ICE")
+                    )
+                    composer.gotoScene("ICE")
+                    print("valid number")
+                else
+                    print("Number must have at least 10 digits")
+                end
             end
             native.setKeyboardFocus( nil )
         print(event.target.id .. " button pressed")
@@ -54,6 +67,8 @@ local function inputListener( event )
         end
     end
 end
+
+
 
 
 -- -----------------------------------------------------------------------------------
