@@ -52,7 +52,7 @@ local function createAccountDetailsRequest()
             if (not response:hasErrors()) then
                 print( TAG, "Account details retrieval SUCCESS" )
                 player = response.data
-                infoUpdate( "Welcome, "..player.displayName.."!" )
+                -- infoUpdate( "Welcome, "..player.displayName.."!" )
             else
                 printErrors( response:getErrors() )
             end
@@ -91,7 +91,7 @@ function v.init()
     gs = createGS()
     gs.setLogger( writeText )
     gs.setApiKey( "L371527JngiM" )
-    gs.setApiSecret( "RSMked0zUwwKqS0baxkktSpt9mNoDN1j" )
+    gs.setApiSecret( "RLDvp4Nj5BZg98BWXTX7ZzbdoGyy3Zoq" )
     gs.setApiCredential( "device" )
     gs.setUseLiveServices( false )
     gs.setAvailabilityCallback( availabilityCallback )
@@ -190,8 +190,8 @@ function v.postScore( score )
         print( TAG, "Submit post score response" )
         if (not response:hasErrors()) then
             print( TAG, "GameSparks post score SUCCESS" )
-            infoClear()
-            infoUpdate( "Score submitted successfully" )
+            -- infoClear()
+            -- infoUpdate( "Score submitted successfully" )
         else
             printErrors( response:getErrors() )
         end
