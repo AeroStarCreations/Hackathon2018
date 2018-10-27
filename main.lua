@@ -24,7 +24,6 @@ gs = gamesparks.init()
 -- Go to first scene
 ----
 if not localData.isRegistered() then
-    print("******************")
     composer.gotoScene("login")
 else
     gamesparks.loginWithUsernameAndPassword( 

@@ -56,7 +56,7 @@ function v.setPassword( password )
     data:save()
 end
 
-function v.setRegistered(isRegistered)
+function v.setRegistered( isRegistered )
     data:set( "isRegistered", isRegistered)
     data:save()
 end
