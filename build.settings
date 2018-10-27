@@ -90,10 +90,10 @@ settings =
 		{
 			publisherId = "tech.scotth"
 		},
-		["CoronaProvider.gameNetwork.apple"] =
-        {
-            publisherId = "com.coronalabs"
-		},
+		--["CoronaProvider.gameNetwork.apple"] =
+        --{
+       --     publisherId = "com.coronalabs"
+	--	},
 		["plugin.idVerifySig"] =
 		{
 			publisherId = "com.cabagomez",

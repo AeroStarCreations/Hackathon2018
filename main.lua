@@ -29,6 +29,7 @@ if not localData.isRegistered() then
 else
     gamesparks.loginWithUsernameAndPassword( 
         localData.getUsername(),
-        localData.getPassword()
+        localData.getPassword(),
+        composer.gotoScene("home")
     )
 end

@@ -20,33 +20,10 @@ local displayName
 
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
-        if (event.target.id == "login") then
-            if (username.text == nil or username.text == "" or
-            password.text == nil or password.text == "") then
-                print( "Must fill all fields" )
-                --infoClear()
-                --infoUpdate( "Must fill all fields" )
-            else 
-                if localData.isRegistered then
-                    print("Is Registered")
-                    gamesparks.loginWithUsernameAndPassword( 
-                        username.text,
-                        password.text
-                    )
-
-                else
-                    print("Is Not Registered")
-                    gamesparks.registerWithUsernameAndPassword(
-                        displayName.text,
-                        username.text, 
-                        password.text
-                    )
-                    localData.setPassword(password.text)
-                    localData.setUsername(username.text)
-                    localData.setRegistered(true)
-                end
-            end
-            native.setKeyboardFocus( nil )
+        if (event.target.id == "safeButton") then
+            --event.target.labelColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } }
+            
+            
         elseif (event.target.id == "back") then
             composer.gotoScene( composer.getSceneName( "previous" ))
         end
@@ -88,14 +65,16 @@ function scene:show( event )
         local safeButton = widget.newButton({
             id = "safeButton",
             x = w / 2,
-            y = h * .4,
+            y = h * .1,
             width = w/1.4,
-            height = 2 * username.height,
+            height = 2 * (h/20),
             label = "I'M SAFE",
-            fontSize = username.height,
+            fontSize = h/20,
             shape = "roundedRect",
-            cornerRadius = username.height * 2 / 3,
+            cornerRadius = (h/20) * 2 / 3,
             onEvent = handleButtonEvent,
+            fillColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } },
+            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } }
         })
 
         safeButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
