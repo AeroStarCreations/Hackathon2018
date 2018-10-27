@@ -1,1 +1,2 @@
-print("hello world")
+local composer = require("composer")
+composer.gotoScene("login")
