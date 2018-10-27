@@ -27,24 +27,14 @@ local function handleButtonEvent( event )
                 --infoClear()
                 --infoUpdate( "Must fill all fields" )
             else 
-                if localData.isRegistered then
-                    print("Is Registered")
-                    gamesparks.loginWithUsernameAndPassword( 
-                        username.text,
-                        password.text
-                    )
-
-                else
-                    print("Is Not Registered")
-                    gamesparks.registerWithUsernameAndPassword(
-                        displayName.text,
-                        username.text, 
-                        password.text
-                    )
-                    localData.setPassword(password.text)
-                    localData.setUsername(username.text)
-                    localData.setRegistered(true)
-                end
+                gamesparks.registerWithUsernameAndPassword(
+                    displayName.text,
+                    username.text, 
+                    password.text
+                )
+                localData.setPassword(password.text)
+                localData.setUsername(username.text)
+                localData.setRegistered(true)
             end
             native.setKeyboardFocus( nil )
         elseif (event.target.id == "back") then

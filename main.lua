@@ -13,7 +13,7 @@ local localData = require("localData")
 -- Local data
 ----
 localData.initAuthData()
-localData.setRegistered( false ) -- delete once ready
+-- localData.setRegistered( false ) -- delete once ready
 
 ----
 -- Initialize GameSparks
@@ -24,6 +24,7 @@ gs = gamesparks.init()
 -- Go to first scene
 ----
 if not localData.isRegistered() then
+    print( "Is not registered" )
     composer.gotoScene("login")
 else
     gamesparks.loginWithUsernameAndPassword( 
