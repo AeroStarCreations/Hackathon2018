@@ -1,4 +1,4 @@
---File to create the scene for the ICE screen
+--File to create the scene for the login screen
 local composer = require( "composer" )
 local widget = require( "widget" )
 local localData = require("localData")
@@ -13,24 +13,46 @@ local scene = composer.newScene()
  
 local w = display.actualContentWidth
 local h = display.actualContentHeight
+local contactName
+local contactNumber
 
 local function handleButtonEvent( event )
+    print("Its working dog")
     if (event.phase == "ended") then
-        print("First Condition")
         if (event.target.id == "addButton") then
-            print("Adding Contact")
-            composer.gotoScene("addContact")
-        end
+            if (contactName.text == nil or contactName.text == "" or
+            contactNumber.text == nil or contactNumber.text == "") then
+                print( "Must fill all fields" )
+                --infoClear()
+                --infoUpdate( "Must fill all fields" )
+            else 
+                gamesparks.addICEContact(
+                    contactName.text,
+                    contactNumber.text
+                )
+                composer.gotoScene("ICE")
+            end
+            native.setKeyboardFocus( nil )
         print(event.target.id .. " button pressed")
+        end
     elseif (event.phase == "began") then
-        event.target:setFillColor(0,0,1)
-        print("begin")
+        event.target:setFillColor(0,1,0)
     end
 end
 
 local function inputListener( event )
     
-   
+    if ("contactName" == event.target.id) then
+        --infoUpdate("contactName")
+        if ("submitted" == event.phase or "ended" == event.phase) then
+            native.setKeyboardFocus( contactNumber )
+        end
+    elseif ("contactNumber" == event.target.id) then
+        --infoUpdate("password")
+        if ("submitted" == event.phase or "ended" == event.phase) then
+            native.setKeyboardFocus( nil )
+        end
+    end
 end
 
 
@@ -57,26 +79,37 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen)
  
     elseif ( phase == "did" ) then
+
         -- Code here runs when the scene is entirely on screen
+        contactName = native.newTextField(w/2, h * .1, w/1.4, h/20)
+        contactName.placeholder = "(Contact Name)"
+        contactName.id = "contactName"
+        contactName:addEventListener( "userInput", inputListener )
+
+        contactNumber = native.newTextField(w/2, h * .2, w/1.4, h/20)
+        contactNumber.inputType = "number"
+        contactNumber.placeholder = "(Contact Phone)"
+        contactNumber.id = "contactNumber"
+        contactNumber:addEventListener( "userInput", inputListener )
 
         local addButton = widget.newButton({
             id = "addButton",
             x = w / 2,
-            y = h * .8,
+            y = h * .4,
             width = w/1.4,
-            height = 2 * (h/20),
+            height = 2 * contactName.height,
             label = "Add ICE",
-            fontSize = h/20,
+            fontSize = contactName.height,
             shape = "roundedRect",
-            cornerRadius = (h/20) * 2 / 3,
-            fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            cornerRadius = contactName.height * 2 / 3,
             onEvent = handleButtonEvent,
-            --onRelease = btnPressed
+            fillColor = { default={ 0,191,255 }, over={ 0,191,255 } },
         })
 
+        sceneGroup:insert( contactName )
+        sceneGroup:insert( contactNumber )
         sceneGroup:insert( addButton )
-        --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
+        
     end
 end
  
@@ -91,6 +124,8 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen)
  
     elseif ( phase == "did" ) then
+        contactName:removeSelf()
+        contactNumber:removeSelf()
         -- Code here runs immediately after the scene goes entirely off screen
  
     end

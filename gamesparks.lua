@@ -214,4 +214,9 @@ function v.setStatus( status )
     end)
 end
 
+function v.addICEContact( Name, Number )
+    print(Name)
+    print(Number)
+end
+
 return v
