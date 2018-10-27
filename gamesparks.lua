@@ -198,4 +198,20 @@ function v.postScore( score )
     end)
 end
 
+function v.setStatus( status )
+    local statusRequest = getLogEventRequest()
+    statusRequest:setEventKey( "Set_Safe" )
+    statusRequest:setEventAttribute( "STATUS", status )
+    statusRequest:send( function(response)
+        print( TAG, "Submit safety status" )
+        if (not response:hasErrors()) then
+            print( TAG, "Safety status post SUCCESS" )
+            -- infoClear()
+            -- infoUpdate( "Score submitted successfully" )
+        else
+            printErrors( response:getErrors() )
+        end
+    end)
+end
+
 return v
