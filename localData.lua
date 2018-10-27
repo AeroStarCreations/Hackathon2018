@@ -68,6 +68,7 @@ end
 function v.resetAuthData()
     data:set( "username", "" )
     data:set( "password", "" )
+    data:set( "isRegistered", false )
     data:save()
 end
 
