@@ -6,7 +6,8 @@ local GGData = require( "GGData" )
 
 -- appData = {
 --     username = string,
---     password = string
+--     password = string,
+--     isRegistered = boolean
 -- }
 
 ----
@@ -33,6 +34,7 @@ local v = {}
 function v.initAuthData()
     data:setIfNew( "username", "")
     data:setIfNew( "password", "" )
+    data:setIfNew( "isRegistered", false)
     data:save()
 end
 
@@ -52,6 +54,15 @@ end
 function v.setPassword( password )
     data:set( "password", password )
     data:save()
+end
+
+function v.setRegistered()
+    data:set( "isRegistered", true)
+    data:save()
+end
+
+function v.isRegistered()
+    return data:get( "isRegistered" )
 end
 
 function v.resetAuthData()
