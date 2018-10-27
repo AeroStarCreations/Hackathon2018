@@ -42,6 +42,8 @@ local function handleButtonEvent( event )
             composer.gotoScene( composer.getSceneName( "previous" ))
         end
         print(event.target.id .. " button pressed")
+    elseif (event.phase == "began") then
+        event.target:setFillColor(0,1,0)
     end
 end
 
@@ -125,6 +127,7 @@ function scene:show( event )
             shape = "roundedRect",
             cornerRadius = username.height * 2 / 3,
             onEvent = handleButtonEvent,
+            fillColor = { default={ 0,191,255 }, over={ 0,191,255 } },
         })
 
         sceneGroup:insert( username )
