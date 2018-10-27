@@ -47,7 +47,7 @@ function v.setUsername( username )
     data:save()
 end
 
-function v.getPassord()
+function v.getPassword()
     return data:get( "password" )
 end
 
