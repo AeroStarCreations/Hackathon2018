@@ -102,10 +102,6 @@ settings =
 			publisherId = "com.cabagomez",
 			supportedPlatforms = { iphone=true }
 		},
-		["CoronaProvider.native.popup.quickLook"] =
-		{
-			publisherId = "com.coronalabs"
-		},
 	},
 
 	--
