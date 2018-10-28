@@ -142,7 +142,6 @@ function scene:show( event )
             labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
             
             onEvent = handleButtonEvent,
-            --onRelease = btnPressed
         })
 
         contactTable = widget.newTableView({
