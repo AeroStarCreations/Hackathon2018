@@ -14,7 +14,7 @@ local location = require("location")
 -- Local data
 ----
 --UNCOMMENT TO REENABLE REGISTRATION
---localData.resetAuthData()
+--localData.resetAuthData() -- optional for demo purposes
 localData.initAuthData()
 -- localData.setRegistered( false ) -- delete once ready
 
