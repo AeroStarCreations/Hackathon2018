@@ -33,5 +33,7 @@ local function locationHandler(event)
         --     userMap.mapType = "standard"
     end
 end
+
 clock = timer.performWithDelay(500, locationHandler, -1)
+
 return class
