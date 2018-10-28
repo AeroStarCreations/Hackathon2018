@@ -33,10 +33,8 @@ local function locationHandler(event)
         --     -- userMap:setMarker( currentLocation.latitude, currentLocation.longitude)
         --     userMap.mapType = "standard"
     end
-<<<<<<< HEAD
 end
+
 clock = timer.performWithDelay(500, locationHandler, -1)
+
 return class
-=======
-end
->>>>>>> f43907b67d46902e4c4627d86c595011f67dd85d

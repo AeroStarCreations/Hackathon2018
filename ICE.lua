@@ -13,6 +13,7 @@ local scene = composer.newScene()
  
 local w = display.actualContentWidth
 local h = display.actualContentHeight
+local contactTable
 
 local function onRowRenderListener( event )
     local row = event.row
@@ -39,9 +40,10 @@ local function onRowRenderListener( event )
         row:insert( row.numberText )
     end
 end
+
 local function createContactTableRows( entries )
     for number, name in pairs(entries) do
-        createTable:insertRow{
+        contactTable:insertRow{
             rowHeight = h / 20,
             rowColor = { default={ 0.9, 0.9, 0.9 }, over={ 1, 0.5, 0, 0.2 } },
             lineColor = { 69/255, 137/255, 247/255 },
@@ -105,7 +107,6 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen)
-        retrieveContacts()
  
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
@@ -159,12 +160,12 @@ function scene:show( event )
         local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
         local lineColor = { 0.5, 0.5, 0.5 }
 
-        
-
         sceneGroup:insert( addButton )
         sceneGroup:insert( contactTable )
         sceneGroup:insert( backButton )
         --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
+
+        retrieveContacts()
     end
 end
  
