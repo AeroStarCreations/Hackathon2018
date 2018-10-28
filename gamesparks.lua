@@ -220,10 +220,7 @@ function v.addICEContact( Name, Number )
     print(Number)
 end
 
-function v.getICEContacts(safeVar )
-    
-    --Read contact list. Access as Bob[1].Name (or whatever it is)
-    
+function v.getSMSMessage( safeVar )
     body = "Hello, this is " .. player.displayName .. "contacting you through Snugg, "
     body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
     body = body .. "This is an automatically generated message to inform everyone in this message that I am "
@@ -242,8 +239,35 @@ function v.getICEContacts(safeVar )
         body = body   
     }
     
-    print(body)
-
     return optionsSMS
 end
+
+function v.addICEContact( name, number )
+    local addContactRequest = getLogEventRequest()
+    addContactRequest:setEventKey( "Add_ICE" )
+    addContactRequest:setEvent( "CONTACT", {name=name, number=number} )
+    addContactRequest:send( function(response)
+        print( TAG, "Add ICE contact" )
+        if (not response:hasErrors()) then
+            print( TAG, "Add ICE contact SUCCESS" )
+        else
+            printErrors( response:getErrors() )
+        end
+    end)
+end
+
+function v.getICEContacts( callback )
+    local eventRequest = getLogEventRequest()
+    eventRequest:setEventKey( "Get_ICE" )
+    eventRequest:send( function(response)
+        print( TAG, "Get ICE contacts response" )
+        if (not response:hasErrors()) then
+            print( TAG, "GameSparks get ICE contacts SUCCESS" )
+            callback( response:getScriptData().CONTACTS )
+        else
+            printErrors( response:getErrors() )
+        end
+    end)
+end
+
 return v
