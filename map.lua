@@ -1,6 +1,7 @@
 local composer = require( "composer" )
 local gamesparks = require("gamesparks")
 local widget = require("widget")
+local location = require("location")
  
 local scene = composer.newScene()
  
@@ -49,20 +50,23 @@ function scene:show( event )
             mapHeight
         )
 
-        local function locationHandler(event)
-            local player = gamesparks.getPlayer()
-            print("player="..tostring(player))
-            if (player) then
-                timer.cancel(clock)
-                local currentLocation = player.location
-                local locationText = "Current location: " .. currentLocation.latitide .. "," .. currentLocation.longditute
-                print("location: "..locationText)
-                userMap:setCenter(currentLocation.latitide, currentLocation.longditute)
-                userMap:addMarker(currentLocation.latitide, currentLocation.longditute)
-                -- userMap:setCenter(39.9977, -83.0086)
-                -- userMap:addMarker(39.9977, -83.0086)
-                userMap.mapType = "standard"
+        local function createMap(lat, long)
+            userMap:setCenter(lat, long)
+            userMap:addMarker(lat, long)
+            -- userMap:setCenter(39.9977, -83.0086)
+            -- userMap:addMarker(39.9977, -83.0086)
+            userMap.mapType = "standard"
+        end
+
+        if (location.isKnown()) then
+            local loc = location.get()
+            createMap(loc.latitude, loc.longitude)
+        else
+            local function callback( event )
+                createMap(event.latitude, event.longitude)
+                Runtime:removeEventListener( "location", callback )
             end
+            location.waitForLocation( callback )
         end
 
         local backButton = widget.newButton({
@@ -79,9 +83,6 @@ function scene:show( event )
             onRelease = handleButtonEvent,
         })
         sceneGroup:insert(backButton)
-        
-        clock = timer.performWithDelay(500, locationHandler, -1)
-
     end
 end
  

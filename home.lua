@@ -165,11 +165,13 @@ function scene:show( event )
         print("IS KNOWN: " .. tostring(location.isKnown()))
         if (location.isKnown()) then
             local loc = location.get()
+            print("****************************************")
             print("latitude = "..loc.latitude)
             print("longitude = "..loc.longitude)
         else
             local function callback( event )
                 Runtime:removeEventListener( "location", callback )
+                print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                 print("latitude = "..event.latitude)
                 print("longitude = "..event.longitude)
             end

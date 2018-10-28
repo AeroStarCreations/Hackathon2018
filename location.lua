@@ -20,7 +20,7 @@ v.close = function()
     Runtime:removeEventListener( "location", locationHandler )
 end
 
-v.get = function( callback )
+v.get = function()
     return {
         latitude = latitude,
         longitude = longitude
