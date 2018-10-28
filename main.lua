@@ -30,16 +30,18 @@ localData.initAuthData()
 ----
 gs = gamesparks.init()
 
+local map = require("map")
+
 ----
 -- Go to first scene
 ----
 if not localData.isRegistered() then
-    print( "Is not registered" )
+   print( "Is not registered" )
     composer.gotoScene("login")
 else
-    gamesparks.loginWithUsernameAndPassword( 
-        localData.getUsername(),
-        localData.getPassword(),
-        composer.gotoScene("home")
-    )
+   gamesparks.loginWithUsernameAndPassword( 
+       localData.getUsername(),
+       localData.getPassword(),
+       composer.gotoScene("home")
+   )
 end
