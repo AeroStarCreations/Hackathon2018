@@ -14,7 +14,6 @@ local locationText = display.newText("Location: ", 0, 250, native.SystemFont, 16
 locationText.x = display.contentCenterX
 
 local function locationHandler(event)
-    print("****************************")
     local player = gamesparks.getPlayer()
     if (not player == null) then
         timer.cancel(clock)
@@ -33,10 +32,6 @@ local function locationHandler(event)
         --     -- userMap:setMarker( currentLocation.latitude, currentLocation.longitude)
         --     userMap.mapType = "standard"
     end
-<<<<<<< HEAD
 end
 clock = timer.performWithDelay(500, locationHandler, -1)
 return class
-=======
-end
->>>>>>> f43907b67d46902e4c4627d86c595011f67dd85d

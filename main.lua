@@ -15,6 +15,7 @@ local localData = require("localData")
 --UNCOMMENT TO REENABLE REGISTRATION
 --localData.resetAuthData()
 localData.initAuthData()
+localData.resetAuthData()
 -- localData.setRegistered( false ) -- delete once ready
 
 ----
