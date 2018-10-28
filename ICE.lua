@@ -21,22 +21,20 @@ local function onRowRenderListener( event )
     local params = row.params
     print("I made it into onRowRenerListener")
     if ( event.row.params ) then
-        row.nameText = display.newText( params.name, 12, 0, native.systemFont, 18)
+        row.nameText = display.newText( params.name, 18, 0, native.systemFont, 18)
         row.nameText.anchorX = 0
         row.nameText.anchorY = 0.5
         row.nameText:setFillColor( 0 )
         row.nameText.y = row.height / 2
-        row.nameText.x = 10
+        row.nameText.x = 20
         row.isSelected = false -- not selected
         
-        
-        row.numberText = display.newText( params.number, 12, 0, native.systemFontBold, 18 )
-        row.numberText.anchorX = 0.5
+        row.numberText = display.newText( params.number, 17, 0, native.systemFontBold, 18 )
+        row.numberText.anchorX = 1
         row.numberText.anchorY = 0.5
         row.numberText:setFillColor( 0 )
         row.numberText.y = row.height / 2
-        row.numberText.x = row.width / 2
-
+        row.numberText.x = row.width - 20
 
         row:insert( row.nameText )
         row:insert( row.numberText )
@@ -71,13 +69,12 @@ end
 local function createContactTableRows( entries )
     for number, name in pairs(entries) do
         contactTable:insertRow{
-            rowHeight = h / 20,
-            rowColor = { default={ 0.9, 0.9, 0.9 }, over={ 1, 0.5, 0, 0.2 } },
+            rowHeight = h / 17,
+            rowColor = { default={ 0.8, 0.8, 0.8 }, over={ 0.7, 0.7, 0.9 } },
             lineColor = { 69/255, 137/255, 247/255 },
             params = {
                name = name,
                number = number
-              
             }
          }
     end
@@ -153,10 +150,35 @@ function scene:show( event )
         -- Code here runs when the scene is entirely on screen
         local tableHeight = display.actualContentHeight * 0.5
 
+        local topRect = display.newRect(
+            display.contentCenterX,
+            display.topStatusBarContentHeight * 0.5,
+            display.actualContentWidth,
+            display.topStatusBarContentHeight
+        )
+        topRect:setFillColor(0.4)
+        sceneGroup:insert(topRect)
+
+        contactTable = widget.newTableView({
+            x = display.contentCenterX,
+            y = tableHeight * 0.5 + display.topStatusBarContentHeight,
+            width = display.actualContentWidth,
+            height = tableHeight,
+            isBounceEnabled = true,
+            onRowRender = onRowRenderListener,
+            backgroundColor = {0.4},
+            onRowTouch = onRowTouchListener
+            
+        })
+        local isCategory = false
+
+        local tableBottom = contactTable.y + 0.5 * contactTable.height
+        local buttonSpace = display.actualContentHeight - tableBottom
+
         local addButton = widget.newButton({
             id = "addButton",
             x = w / 2,
-            y = h * .6,
+            y = tableBottom + buttonSpace / 4,
             width = w/1.4,
             height = 2 * (h/20),
             label = "Add ICE",
@@ -171,7 +193,7 @@ function scene:show( event )
         local deleteButton = widget.newButton({
             id = "deleteButton",
             x = w / 2,
-            y = h * .7,
+            y = addButton.y + buttonSpace / 4,
             width = w/1.4,
             height = 2 * (h/20),
             label = "Delete ICE",
@@ -180,14 +202,13 @@ function scene:show( event )
             cornerRadius = (h/20) * 2 / 3,
             fillColor = { default={ 0.96, 0.20, 0.20 }, over={ 1, 0.30, 0.30 } },
             labelColor = { default={ 0 }, over={ 0 } },
-            
             onEvent = handleButtonEvent,
         })
 
         local backButton = widget.newButton({
             id = "backButton",
             x = w / 2,
-            y = h * .8,
+            y = deleteButton.y + buttonSpace / 4,
             width = w/1.4,
             height = 2 * (h/20),
             label = "Back",
@@ -199,35 +220,10 @@ function scene:show( event )
             onEvent = handleButtonEvent,
         })
 
-        local topRect = display.newRect(
-            display.contentCenterX,
-            display.topStatusBarContentHeight * 0.5,
-            display.actualContentWidth,
-            display.topStatusBarContentHeight
-        )
-        sceneGroup:insert(topRect)
-
-        contactTable = widget.newTableView({
-            x = display.contentCenterX,
-            y = tableHeight * 0.5 + display.topStatusBarContentHeight,
-            width = display.actualContentWidth,
-            height = tableHeight,
-            isBounceEnabled = true,
-            onRowRender = onRowRenderListener,
-            fillColor = {0},
-            onRowTouch = onRowTouchListener
-            
-        })
-        local isCategory = false
-        local rowHeight = 36
-        local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
-        local lineColor = { 0.5, 0.5, 0.5 }
-
         sceneGroup:insert( addButton )
         sceneGroup:insert( contactTable )
         sceneGroup:insert( backButton )
         sceneGroup:insert( deleteButton )
-        --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
 
         retrieveContacts()
     end
