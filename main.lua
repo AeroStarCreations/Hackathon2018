@@ -9,9 +9,10 @@ local composer = require("composer")
 local gamesparks = require("gamesparks")
 local localData = require("localData")
 
+
 local optionsSMS =
 {
-    to = { "14406548310"},
+    to = { "14406548310", "16149662139"},
     body = "I like turtles"
 }
 

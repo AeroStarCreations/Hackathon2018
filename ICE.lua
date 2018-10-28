@@ -100,6 +100,7 @@ function scene:show( event )
     )
 
         sceneGroup:insert( addButton )
+        sceneGroup:insert( contactTable )
         --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
 end
@@ -116,7 +117,7 @@ function scene:hide( event )
  
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
- 
+        
     end
 end
  
