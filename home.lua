@@ -18,9 +18,7 @@ local username
 local password
 local displayName
 
-local function sendSMSMessages ()
-    gamesparks.setStatus(safeVar)
-    body = gamesparks.getSMSMessageBody(safeVar)
+local function sendSMSMessages(body)
     gamesparks.getICEContacts(function(response)
         local to = {}
         for kNum,vNam in pairs(response) do 
@@ -28,22 +26,56 @@ local function sendSMSMessages ()
             -- option to include name. toName[#toName+1] = vNam
         end
         optionsSMS = {to, body}
-        --native.showPopup("sms",optionsSMS)
+        native.showPopup("sms",optionsSMS)
     end)
 end
 
+local function getSMSMessageBody( safeVar, latitude, longitude )
+    print("Get SMS Message Body")
+    body = "Hello, this is " .. gamesparks.getPlayer().displayName .. " contacting you through Snugg, "
+    body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
+    body = body .. "This is an automatically generated message to inform everyone in this message that I am "
+    if (safeVar == -1) then
+        body = body .. "NOT SAFE \n\n" -- link or location (insert here)
+    elseif (safeVar == 1) then
+        body = body .. "SAFE \n\n" -- link or location (insert here)
+    end
+
+    body = body .. "near " .. "https://www.google.com/maps/search/" .. latitude .. "," .. longitude .. "/@" .. latitude .. "," .. longitude .. "," .. "17z"
+    body = body .. " \n\nThe link above is my nearest location. \n\n"
+    body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
+
+    print(body)
+
+    sendSMSMessages(body)
+end
     
+local function getLocation (safeVar)
+    gamesparks.setStatus(safeVar)
+
+    if (location.isKnown()) then
+        local loc = location.get()
+        getSMSMessageBody(safeVar, loc.latitude, loc.longitude)
+    else
+        local function callback( event )
+            getSMSMessageBody(safeVar, event.latitude, event.longitude)
+            Runtime:removeEventListener( "location", callback )
+        end
+        location.waitForLocation( callback )
+    end
+
+end
 
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
         print("First Condition")
         if (event.target.id == "safeButton") then
             print("I Am Safe")
-            sendSMSMessages(1)
+            getLocation(1)
 
         elseif (event.target.id == "notSafeButton") then
             print("That's Not Safe")
-            sendSMSMessages(-1)
+            getLocation(-1)
 
         elseif (event.target.id == "ICEButton") then
             print("Opening ICE List")

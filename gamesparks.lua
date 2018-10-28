@@ -214,40 +214,6 @@ function v.setStatus( status )
     end)
 end
 
-function v.getSMSMessageBody( safeVar )
-    local clock
-    print("Get SMS Message Body")
-    body = "Hello, this is " .. player.displayName .. " contacting you through Snugg, "
-    body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
-    body = body .. "This is an automatically generated message to inform everyone in this message that I am "
-    if (safeVar == -1) then
-        body = body .. "NOT SAFE \n\n" -- link or location (insert here)
-    elseif (safeVar == 1) then
-        body = body .. "SAFE \n\n" -- link or location (insert here)
-    end
-
-    clock = timer.performWithDelay(500, locationHandler, -1)
-    latitude = player.location.latitide
-    longitude = player.location.longditute
-
-    body = body .. "near " .. "https://www.google.com/maps/search/" .. latitude .. "," .. longitude .. "/@" .. latitude .. "," .. longitude .. "," .. "17z"
-    body = body .. " \n\nThe link above is my nearest location. \n\n"
-    body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
-
-    print(body)
-
-    return body
-    
-
-    -- local optionsSMS =
-    -- {
-    --     to = { "14406548310", "16149662139"}, --temp... would be the phone number list
-    --     body = body   
-    -- }
-    
-    -- return optionsSMS
-end
-
 function v.addICEContact( name, number )
     print("Trying to add contacts")
     local addContactRequest = getLogEventRequest()
