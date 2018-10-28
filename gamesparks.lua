@@ -214,13 +214,14 @@ function v.setStatus( status )
     end)
 end
 
-function v.addICEContact( Name, Number )
-    --Modify upload
-    print(Name)
-    print(Number)
-end
+-- function v.addICEContact( Name, Number )
+--     --Modify upload
+--     print(Name)
+--     print(Number)
+-- end
 
-function v.getSMSMessage( safeVar )
+function v.getSMSMessageBody( safeVar )
+    print("Get SMS Message Body")
     body = "Hello, this is " .. player.displayName .. "contacting you through Snugg, "
     body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
     body = body .. "This is an automatically generated message to inform everyone in this message that I am "
@@ -233,19 +234,22 @@ function v.getSMSMessage( safeVar )
     body = body .. "The link above is my nearest location. \n\n"
     body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
 
-    local optionsSMS =
-    {
-        to = { "14406548310", "16149662139"}, --temp... would be the phone number list
-        body = body   
-    }
+    return body
     
-    return optionsSMS
+
+    -- local optionsSMS =
+    -- {
+    --     to = { "14406548310", "16149662139"}, --temp... would be the phone number list
+    --     body = body   
+    -- }
+    
+    -- return optionsSMS
 end
 
 function v.addICEContact( name, number )
     local addContactRequest = getLogEventRequest()
     addContactRequest:setEventKey( "Add_ICE" )
-    addContactRequest:setEvent( "CONTACT", {name=name, number=number} )
+    addContactRequest:setEventAttribute( "CONTACT", {name=name, number=number} )
     addContactRequest:send( function(response)
         print( TAG, "Add ICE contact" )
         if (not response:hasErrors()) then
@@ -263,7 +267,8 @@ function v.getICEContacts( callback )
         print( TAG, "Get ICE contacts response" )
         if (not response:hasErrors()) then
             print( TAG, "GameSparks get ICE contacts SUCCESS" )
-            callback( response:getScriptData().CONTACTS )
+            print(json.prettify(response:getScriptData()))
+            callback( response:getScriptData().Contacts )
         else
             printErrors( response:getErrors() )
         end
