@@ -21,12 +21,19 @@ local displayName
 local function sendSMSMessages(body)
     gamesparks.getICEContacts(function(response)
         local to = {}
+        local i = 1
         for kNum,vNam in pairs(response) do 
-            to[#to+1] = kNum
+            to[i] = tostring(kNum)
+            i = i + 1
             -- option to include name. toName[#toName+1] = vNam
         end
-        optionsSMS = {to, body}
-        native.showPopup("sms",optionsSMS)
+        optionsSMS = 
+        {
+            to = to,
+            body = body
+        }
+        native.showPopup( "sms", optionsSMS)
+        -- native.showPopup( "sms", {to={"1234567890", "0987654321"}, body=body})
     end)
 end
 
@@ -36,14 +43,16 @@ local function getSMSMessageBody( safeVar, latitude, longitude )
     body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
     body = body .. "This is an automatically generated message to inform everyone in this message that I am "
     if (safeVar == -1) then
-        body = body .. "NOT SAFE \n\n" -- link or location (insert here)
+        body = body .. "NOT SAFE" -- link or location (insert here)
     elseif (safeVar == 1) then
-        body = body .. "SAFE \n\n" -- link or location (insert here)
+        body = body .. "SAFE" -- link or location (insert here)
     end
 
-    body = body .. "near " .. "https://www.google.com/maps/search/" .. latitude .. "," .. longitude .. "/@" .. latitude .. "," .. longitude .. "," .. "17z"
-    body = body .. " \n\nThe link above is my nearest location. \n\n"
+    body = body .. " near " .. "https://www.google.com/maps/search/" .. latitude .. "," .. longitude .. "/@" .. latitude .. "," .. longitude .. "," .. "17z"
+    body = body .. "\n\nThe link above is my nearest location. "
     body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
+
+    -- body = "Hello, World!"
 
     print(body)
 
@@ -197,13 +206,11 @@ function scene:show( event )
         print("IS KNOWN: " .. tostring(location.isKnown()))
         if (location.isKnown()) then
             local loc = location.get()
-            print("****************************************")
             print("latitude = "..loc.latitude)
             print("longitude = "..loc.longitude)
         else
             local function callback( event )
                 Runtime:removeEventListener( "location", callback )
-                print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                 print("latitude = "..event.latitude)
                 print("longitude = "..event.longitude)
             end

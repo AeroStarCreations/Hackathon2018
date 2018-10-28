@@ -97,15 +97,15 @@ settings =
 		{
 			publisherId = "tech.scotth"
 		},
-		--["CoronaProvider.gameNetwork.apple"] =
-        --{
-       --     publisherId = "com.coronalabs"
-	--	},
 		["plugin.idVerifySig"] =
 		{
 			publisherId = "com.cabagomez",
 			supportedPlatforms = { iphone=true }
-		}
+		},
+		["CoronaProvider.native.popup.quickLook"] =
+		{
+			publisherId = "com.coronalabs"
+		},
 	},
 
 	--
