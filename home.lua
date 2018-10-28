@@ -160,7 +160,6 @@ function scene:show( event )
         sceneGroup:insert( notSafeButton )
         sceneGroup:insert( ICEButton )
         sceneGroup:insert( mapButton )
-        --safeButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
 end
  
