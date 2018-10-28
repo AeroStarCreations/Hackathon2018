@@ -14,6 +14,32 @@ local scene = composer.newScene()
 local w = display.actualContentWidth
 local h = display.actualContentHeight
 
+local function onRowRenderListener( event )
+    local row = event.row
+    local params = row.params
+    print("I made it into onRowRenerListener")
+    if ( event.row.params ) then
+        row.nameText = display.newText( params.name, 12, 0, native.systemFont, 18)
+        row.nameText.anchorX = 0
+        row.nameText.anchorY = 0.5
+        row.nameText:setFillColor( 0 )
+        row.nameText.y = row.height / 2
+        row.nameText.x = 10
+        
+        
+        row.numberText = display.newText( params.number, 12, 0, native.systemFontBold, 18 )
+        row.numberText.anchorX = 0.5
+        row.numberText.anchorY = 0.5
+        row.numberText:setFillColor( 0 )
+        row.numberText.y = row.height / 2
+        row.numberText.x = row.width / 2
+
+
+        row:insert( row.nameText )
+        row:insert( row.numberText )
+    end
+end
+
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
         print("First Condition")
@@ -71,36 +97,37 @@ function scene:show( event )
             cornerRadius = (h/20) * 2 / 3,
             fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
             labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            
             onEvent = handleButtonEvent,
             --onRelease = btnPressed
         })
 
-        local contactTable = widget.newTableView({
-            id = "contactTable",
+        contactTable = widget.newTableView({
             left = w/8,
             top = h * .1,
             isBounceEnabled = true,
             width = w/ 1.3,
             height = h * .6,
+            onRowRender = onRowRenderListener,
             fillColor = {default={255,255,255}, over={255,255,255}}
             
         })
         local isCategory = false
-    local rowHeight = 36
-    local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
-    local lineColor = { 0.5, 0.5, 0.5 }
+        local rowHeight = 36
+        local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
+        local lineColor = { 0.5, 0.5, 0.5 }
         contactTable:insertRow(
         {
             isCategory = isCategory,
             rowHeight = rowHeight,
             rowColor = rowColor,
             lineColor = lineColor,
+            
             params = {
                 name = "Nate",
                 number = "12345678902"
             }  -- Include custom data in the row
-        }
-    )
+        })
 
         sceneGroup:insert( addButton )
         sceneGroup:insert( contactTable )
