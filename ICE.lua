@@ -95,7 +95,10 @@ function scene:show( event )
             rowHeight = rowHeight,
             rowColor = rowColor,
             lineColor = lineColor,
-            params = {}  -- Include custom data in the row
+            params = {
+                name = "Nate",
+                number = "12345678902"
+            }  -- Include custom data in the row
         }
     )
 
