@@ -14,7 +14,6 @@ local locationText = display.newText("Location: ", 0, 250, native.SystemFont, 16
 locationText.x = display.contentCenterX
 
 local function locationHandler(event)
-    print("****************************")
     local player = gamesparks.getPlayer()
     if (not player == null) then
         timer.cancel(clock)
