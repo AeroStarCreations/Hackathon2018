@@ -75,6 +75,30 @@ function scene:show( event )
             --onRelease = btnPressed
         })
 
+        local contactTable = widget.newTableView({
+            id = "contactTable",
+            left = w/8,
+            top = h * .1,
+            isBounceEnabled = true,
+            width = w/ 1.3,
+            height = h * .6,
+            fillColor = {default={255,255,255}, over={255,255,255}}
+            
+        })
+        local isCategory = false
+    local rowHeight = 36
+    local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
+    local lineColor = { 0.5, 0.5, 0.5 }
+        contactTable:insertRow(
+        {
+            isCategory = isCategory,
+            rowHeight = rowHeight,
+            rowColor = rowColor,
+            lineColor = lineColor,
+            params = {}  -- Include custom data in the row
+        }
+    )
+
         sceneGroup:insert( addButton )
         --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
