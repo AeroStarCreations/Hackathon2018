@@ -100,12 +100,12 @@ function scene:show( event )
     elseif ( phase == "did" ) then
 
         -- Code here runs when the scene is entirely on screen
-        contactName = native.newTextField(w/2, h * .1, w/1.4, h/20)
+        contactName = native.newTextField(w/2, h * .2, w/1.4, h/20)
         contactName.placeholder = "(Contact Name)"
         contactName.id = "contactName"
         contactName:addEventListener( "userInput", inputListener )
 
-        contactNumber = native.newTextField(w/2, h * .2, w/1.4, h/20)
+        contactNumber = native.newTextField(w/2, h * .4, w/1.4, h/20)
         contactNumber.inputType = "number"
         contactNumber.placeholder = "(Contact Phone)"
         contactNumber.id = "contactNumber"
@@ -114,7 +114,7 @@ function scene:show( event )
         local addButton = widget.newButton({
             id = "addButton",
             x = w / 2,
-            y = h * .4,
+            y = h * .6,
             width = w/1.4,
             height = 2 * contactName.height,
             label = "Add ICE",
@@ -129,7 +129,7 @@ function scene:show( event )
         local cancelButton = widget.newButton({
             id = "cancelButton",
             x = w / 2,
-            y = h * .6,
+            y = h * .8,
             width = w/1.4,
             height = 2 * contactName.height,
             label = "Cancel",

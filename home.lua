@@ -160,6 +160,7 @@ function scene:show( event )
         sceneGroup:insert( notSafeButton )
         sceneGroup:insert( ICEButton )
         sceneGroup:insert( mapButton )
+        
     end
 end
  
