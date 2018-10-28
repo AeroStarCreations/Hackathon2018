@@ -43,28 +43,29 @@ local function onRowRenderListener( event )
     end
 end
 
-local function onRowTouchListener (event)
-    local row = event.row
-    local params = row.params
+local function onRowTouchListener(event)
+    if (event.phase == "release") then
+        local row = event.row
+        local params = row.params
 
-    if (row.isSelected) then
-        row.nameText:setFillColor(0)
-        row.numberText:setFillColor(0)
-        row.isSelected = false
-    else
-        row.nameText:setFillColor(1, 0, 0)
-        row.numberText:setFillColor(1, 0, 0)
-        row.isSelected = true
+        if (row.isSelected) then
+            row.nameText:setFillColor(0)
+            row.numberText:setFillColor(0)
+            row.isSelected = false
+        else
+            row.nameText:setFillColor(1, 0, 0)
+            row.numberText:setFillColor(1, 0, 0)
+            row.isSelected = true
+        end
+
+        if ((previousSelectedIndex ~= row.index) and (previousSelectedIndex ~=-1)) then
+            local previousRow = contactTable:getRowAtIndex(previousSelectedIndex)
+            previousRow.nameText:setFillColor(0)
+            previousRow.numberText:setFillColor(0)
+            row.isSelected = false
+        end
+        previousSelectedIndex = row.index
     end
-    if ((previousSelectedIndex ~= row.index) and (previousSelectedIndex ~=-1)) then
-        local previousRow = contactTable:getRowAtIndex(previousSelectedIndex)
-        previousRow.nameText:setFillColor(0)
-        previousRow.numberText:setFillColor(0)
-    end
-    previousSelectedIndex = row.index
-
-
-    
 end
 
 local function createContactTableRows( entries )
@@ -89,6 +90,14 @@ local function retrieveContacts()
     
 end
 
+local function deleteAndRerenderTable( number )
+    gamesparks.deleteICEContact(number, function()
+        gamesparks.getICEContacts( function(response)
+            contactTable:deleteAllRows()
+            createContactTableRows(response)
+        end)
+    end)
+end
 
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
@@ -99,9 +108,11 @@ local function handleButtonEvent( event )
         elseif (event.target.id == "backButton") then
             composer.gotoScene("home")
         elseif (event.target.id == "deleteButton") then
-            local rowz = contactTable:getRowAtIndex(previousSelectedIndex)
-            local numberz = rowz.numberText.nameText
-            gampesparks.deleteICEContact({number = numberz})
+            if (previousSelectedIndex ~= -1 ) then
+                local row = contactTable:getRowAtIndex(previousSelectedIndex)
+                local number = row.numberText.text
+                deleteAndRerenderTable(number)
+            end
         end
         print(event.target.id .. " button pressed")
     elseif (event.phase == "began") then
@@ -140,6 +151,7 @@ function scene:show( event )
  
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
+        local tableHeight = display.actualContentHeight * 0.5
 
         local addButton = widget.newButton({
             id = "addButton",
@@ -151,26 +163,8 @@ function scene:show( event )
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
-            fillColor = { default={ 0, 0, 200 }, over={ 0, 0, 200 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
-            
-            onEvent = handleButtonEvent,
-            --onRelease = btnPressed
-        })
-
-        local backButton = widget.newButton({
-            id = "backButton",
-            x = w / 2,
-            y = h * .8,
-            width = w/1.4,
-            height = 2 * (h/20),
-            label = "BACK",
-            fontSize = h/20,
-            shape = "roundedRect",
-            cornerRadius = (h/20) * 2 / 3,
             fillColor = { default={ 0.28, 0.85, 0.40 }, over={ 0.38, 0.95, 0.50 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
-            
+            labelColor = { default={ 0 }, over={ 0 } },
             onEvent = handleButtonEvent,
         })
 
@@ -180,25 +174,47 @@ function scene:show( event )
             y = h * .7,
             width = w/1.4,
             height = 2 * (h/20),
-            label = "Delete Contact",
+            label = "Delete ICE",
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
-            fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            fillColor = { default={ 0.96, 0.20, 0.20 }, over={ 1, 0.30, 0.30 } },
+            labelColor = { default={ 0 }, over={ 0 } },
             
             onEvent = handleButtonEvent,
         })
 
+        local backButton = widget.newButton({
+            id = "backButton",
+            x = w / 2,
+            y = h * .8,
+            width = w/1.4,
+            height = 2 * (h/20),
+            label = "Back",
+            fontSize = h/20,
+            shape = "roundedRect",
+            cornerRadius = (h/20) * 2 / 3,
+            fillColor = { default={ 0.2, 0.55, 1 }, over={ 0.3, 0.65, 1 } },
+            labelColor = { default={ 0 }, over={ 0 } },
+            onEvent = handleButtonEvent,
+        })
+
+        local topRect = display.newRect(
+            display.contentCenterX,
+            display.topStatusBarContentHeight * 0.5,
+            display.actualContentWidth,
+            display.topStatusBarContentHeight
+        )
+        sceneGroup:insert(topRect)
 
         contactTable = widget.newTableView({
-            left = w/8,
-            top = h * .05,
+            x = display.contentCenterX,
+            y = tableHeight * 0.5 + display.topStatusBarContentHeight,
+            width = display.actualContentWidth,
+            height = tableHeight,
             isBounceEnabled = true,
-            width = w/ 1.3,
-            height = h * .4,
             onRowRender = onRowRenderListener,
-            fillColor = {default={255,255,255}, over={255,255,255}},
+            fillColor = {0},
             onRowTouch = onRowTouchListener
             
         })

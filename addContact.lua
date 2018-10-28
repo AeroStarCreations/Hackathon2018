@@ -122,7 +122,8 @@ function scene:show( event )
             shape = "roundedRect",
             cornerRadius = contactName.height * 2 / 3,
             onEvent = handleButtonEvent,
-            fillColor = { default={ 0,191,255 }, over={ 0,191,255 } },
+            fillColor = { default={ 0.2, 0.55, 1 }, over={ 0.3, 0.65, 1 } },
+            labelColor = { default={ 0 }, over={ 0 } },
         })
 
         local cancelButton = widget.newButton({
@@ -136,7 +137,8 @@ function scene:show( event )
             shape = "roundedRect",
             cornerRadius = contactName.height * 2 / 3,
             onEvent = handleButtonEvent,
-            fillColor = { default={ 255,0,0 }, over={ 255,0,0 } },
+            fillColor = { default={ 0.96, 0.20, 0.20 }, over={ 1, 0.30, 0.30 } },
+            labelColor = { default={ 0 }, over={ 0 } },
         })
 
         sceneGroup:insert( contactName )

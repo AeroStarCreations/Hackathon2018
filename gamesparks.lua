@@ -279,14 +279,15 @@ function v.getICEContacts( callback )
     end)
 end
 
-function v.deleteICEContact( number )
+function v.deleteICEContact( number, callback )
     print("Trying to delete a contact")
     local deleteContactRequest = getLogEventRequest()
-    eventRequest:setEventAttribute( "NUMBER", number )
-    eventRequest:setEventKey( "Delete_ICE" )
-    eventRequest:send ( function(response)
-        if (not response: hasErrors()) then
+    deleteContactRequest:setEventAttribute( "NUMBER", {number=number} )
+    deleteContactRequest:setEventKey( "Delete_ICE" )
+    deleteContactRequest:send ( function(response)
+        if (not response:hasErrors()) then
             print( TAG, "GameSparks delete ICE contact SUCCESS")
+            callback()
         else
             printErrors( response:getErrors() )
         end
