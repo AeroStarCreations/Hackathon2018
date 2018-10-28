@@ -215,8 +215,12 @@ function v.setStatus( status )
 end
 
 function v.addICEContact( Name, Number )
+    --Modify upload
     print(Name)
     print(Number)
 end
 
+function v.getICEContacts( )
+    --Read contact list. Access as Bob[1].Name (or whatever it is)
+end
 return v
