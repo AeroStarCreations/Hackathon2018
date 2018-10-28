@@ -22,8 +22,6 @@ localData.initAuthData()
 ----
 gs = gamesparks.init()
 
-local map = require("map")
-
 ----
 -- Go to first scene
 ----

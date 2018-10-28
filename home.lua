@@ -47,6 +47,9 @@ local function handleButtonEvent( event )
         elseif (event.target.id == "ICEButton") then
             print("Opening ICE List")
             composer.gotoScene("ICE")
+        elseif (event.target.id == "mapButton") then
+            print("Opening map view")
+            composer.gotoScene("map")
         end
         print(event.target.id .. " button pressed")
     elseif (event.phase == "began") then
@@ -86,57 +89,77 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
 
+        local buttonW = w * 0.8
+        local buttonH = h * 0.1
+        local numButtons = 4
+
         local safeButton = widget.newButton({
             id = "safeButton",
             x = w / 2,
-            y = h * .1,
-            width = w/1.4,
-            height = 2 * (h/20),
+            y = h / (numButtons + 1),
+            width = buttonW,
+            height = buttonH,
             label = "I'M SAFE",
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
             onEvent = handleButtonEvent,
-            fillColor = { default={ 0, 200, 0 }, over={ 0, 200, 0 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            fillColor = { default={ 0.28, 0.85, 0.40 }, over={ 0.38, 0.95, 0.50 } },
+            labelColor = { default={ 0 }, over={ 0 } },
             --onRelease = btnPressed
         })
 
         local notSafeButton = widget.newButton({
             id = "notSafeButton",
             x = w / 2,
-            y = h * .25,
-            width = w/1.4,
-            height = 2 * (h/20),
+            y = safeButton.y * 2,
+            width = buttonW,
+            height = buttonH,
             label = "I'M NOT SAFE",
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
             onEvent = handleButtonEvent,
-            fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            fillColor = { default={ 0.96, 0.20, 0.20 }, over={ 1, 0.30, 0.30 } },
+            labelColor = { default={ 0 }, over={ 0 } },
             --onRelease = btnPressed
         })
 
         local ICEButton = widget.newButton({
             id = "ICEButton",
             x = w / 2,
-            y = h * .6,
-            width = w/1.4,
-            height = 2 * (h/10),
+            y = safeButton.y * 3,
+            width = buttonW,
+            height = buttonH,
             label = "ICE",
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
             onEvent = handleButtonEvent,
-            fillColor = { default={ 100, 100, 100 }, over={ 100, 100, 100 } },
-            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            fillColor = { default={ 0.2, 0.55, 1 }, over={ 0.3, 0.65, 1 } },
+            labelColor = { default={ 0 }, over={ 0 } },
             --onRelease = btnPressed
+        })
+
+        local mapButton = widget.newButton({
+            id = "mapButton",
+            x = w / 2,
+            y = safeButton.y * 4,
+            width = buttonW,
+            height = buttonH,
+            label = "Find Location",
+            fontSize = h/20,
+            shape = "roundedRect",
+            cornerRadius = (h/20) * 2 / 3,
+            onEvent = handleButtonEvent,
+            fillColor = { default={ 1, 0.51, 0.21 }, over={ 1, 0.61, 0.31 } },
+            labelColor = { default={ 0 }, over={ 0 } },
         })
 
         sceneGroup:insert( safeButton )
         sceneGroup:insert( notSafeButton )
         sceneGroup:insert( ICEButton )
+        sceneGroup:insert( mapButton )
         --safeButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
 end

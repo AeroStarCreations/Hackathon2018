@@ -1,39 +1,121 @@
--- create new map
-
+local composer = require( "composer" )
 local gamesparks = require("gamesparks")
-local json = require("json")
+local widget = require("widget")
+ 
+local scene = composer.newScene()
+ 
+-- -----------------------------------------------------------------------------------
+-- Code outside of the scene event functions below will only be executed ONCE unless
+-- the scene is removed entirely (not recycled) via "composer.removeScene()"
+-- -----------------------------------------------------------------------------------
 local clock 
-local class = {}
-local userMap = native.newMapView(70,250,750, 900)
--- userMap:setMarker(-37.87823, 170.23434)
--- if userMap == nil then
---     local text = display.newText("Error", 200, 250, native.SystemFont, 16)
--- end
+local userMap
 
-local locationText = display.newText("Location: ", 0, 250, native.SystemFont, 16)
-locationText.x = display.contentCenterX
+local function handleButtonEvent( event )
+    composer.gotoScene("home")
+end
+  
+-- -----------------------------------------------------------------------------------
+-- Scene event functions
+-- -----------------------------------------------------------------------------------
+ 
+-- create()
+function scene:create( event )
+ 
+    local sceneGroup = self.view
+    -- Code here runs when the scene is first created but has not yet appeared on screen
+ 
+end
+ 
+ 
+-- show()
+function scene:show( event )
+ 
+    local sceneGroup = self.view
+    local phase = event.phase
+ 
+    if ( phase == "will" ) then
+        -- Code here runs when the scene is still off screen (but is about to come on screen)
+        
+    elseif ( phase == "did" ) then
+        -- Code here runs when the scene is entirely on screen
+        local buttonHeight = display.actualContentHeight*0.1
+        local mapHeight = display.actualContentHeight - buttonHeight
 
-local function locationHandler(event)
-    local player = gamesparks.getPlayer()
-    if (not player == null) then
-        timer.cancel(clock)
-        local currentLocation = player.getLocation()
-        print(json.prettify(currentLocation))
-        local locationText = "Current location: " .. currentLocation.latitude .. "," .. currentLocation.longditute
-        userMap:setCenter(currentLocation.latitude, currentLocation.longditute)
-        userMap:setMarker(currentLocation.latitude, currentLocation.longditute)
-        userMap.mapType = "standard"
-        -- local currentLocation = userMap:getUserLocation()
-        -- if currentLocation.errorCode then
-        --     locationText.text = error.Message 
-        -- else
-        --     locationText.text = "Current location: " .. currentLocation.latitude .. "," .. currentLocation.longitude
-        --     userMap:setCenter( currentLocation.latitude, currentLocation.longitude )
-        --     -- userMap:setMarker( currentLocation.latitude, currentLocation.longitude)
-        --     userMap.mapType = "standard"
+        userMap = native.newMapView(
+            display.contentCenterX,
+            display.screenOriginY + mapHeight * 0.5,
+            display.actualContentWidth,
+            mapHeight
+        )
+
+        local function locationHandler(event)
+            local player = gamesparks.getPlayer()
+            print("player="..tostring(player))
+            if (player) then
+                timer.cancel(clock)
+                local currentLocation = player.location
+                local locationText = "Current location: " .. currentLocation.latitide .. "," .. currentLocation.longditute
+                print("location: "..locationText)
+                userMap:setCenter(currentLocation.latitide, currentLocation.longditute)
+                userMap:addMarker(currentLocation.latitide, currentLocation.longditute)
+                userMap.mapType = "standard"
+            end
+        end
+
+        local backButton = widget.newButton({
+            id = "back",
+            x = display.contentCenterX,
+            y = display.actualContentHeight - buttonHeight * 0.5,
+            width = display.actualContentWidth,
+            height = buttonHeight,
+            label = "Back",
+            fontSize = display.actualContentHeight/20,
+            shape = "rect",
+            fillColor = { default={ 0.6, 1, 0.6 }, over={ 0.5, 1, 0.5 } },
+            labelColor = { default={ 0 }, over={ 0 } },
+            onRelease = handleButtonEvent,
+        })
+        sceneGroup:insert(backButton)
+        
+        clock = timer.performWithDelay(500, locationHandler, -1)
+
     end
 end
-
-clock = timer.performWithDelay(500, locationHandler, -1)
-
-return class
+ 
+ 
+-- hide()
+function scene:hide( event )
+ 
+    local sceneGroup = self.view
+    local phase = event.phase
+ 
+    if ( phase == "will" ) then
+        -- Code here runs when the scene is on screen (but is about to go off screen)
+ 
+    elseif ( phase == "did" ) then
+        -- Code here runs immediately after the scene goes entirely off screen
+ 
+    end
+end
+ 
+ 
+-- destroy()
+function scene:destroy( event )
+ 
+    local sceneGroup = self.view
+    -- Code here runs prior to the removal of scene's view
+ 
+end
+ 
+ 
+-- -----------------------------------------------------------------------------------
+-- Scene event function listeners
+-- -----------------------------------------------------------------------------------
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+-- -----------------------------------------------------------------------------------
+ 
+return scene
