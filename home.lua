@@ -3,6 +3,7 @@ local composer = require( "composer" )
 local widget = require( "widget" )
 local localData = require("localData")
 local gamesparks = require("gamesparks")
+local location = require("location")
 local scene = composer.newScene()
  
 -- -----------------------------------------------------------------------------------
@@ -161,6 +162,19 @@ function scene:show( event )
         sceneGroup:insert( ICEButton )
         sceneGroup:insert( mapButton )
         
+        print("IS KNOWN: " .. tostring(location.isKnown()))
+        if (location.isKnown()) then
+            local loc = location.get()
+            print("latitude = "..loc.latitude)
+            print("longitude = "..loc.longitude)
+        else
+            local function callback( event )
+                Runtime:removeEventListener( "location", callback )
+                print("latitude = "..event.latitude)
+                print("longitude = "..event.longitude)
+            end
+            location.waitForLocation( callback )
+        end
     end
 end
  

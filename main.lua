@@ -8,6 +8,7 @@
 local composer = require("composer")
 local gamesparks = require("gamesparks")
 local localData = require("localData")
+local location = require("location")
 
 ----
 -- Local data
@@ -21,6 +22,12 @@ localData.initAuthData()
 -- Initialize GameSparks
 ----
 gs = gamesparks.init()
+
+----
+-- Location services
+----
+system.setLocationAccuracy(10)
+location.init()
 
 ----
 -- Go to first scene
