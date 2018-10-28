@@ -46,6 +46,8 @@ local function handleButtonEvent( event )
         if (event.target.id == "addButton") then
             print("Adding Contact")
             composer.gotoScene("addContact")
+        elseif (event.target.id == "backButton") then
+            composer.gotoScene("home")
         end
         print(event.target.id .. " button pressed")
     elseif (event.phase == "began") then
@@ -88,10 +90,27 @@ function scene:show( event )
         local addButton = widget.newButton({
             id = "addButton",
             x = w / 2,
-            y = h * .8,
+            y = h * .6,
             width = w/1.4,
             height = 2 * (h/20),
             label = "Add ICE",
+            fontSize = h/20,
+            shape = "roundedRect",
+            cornerRadius = (h/20) * 2 / 3,
+            fillColor = { default={ 0, 0, 200 }, over={ 0, 0, 200 } },
+            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            
+            onEvent = handleButtonEvent,
+            --onRelease = btnPressed
+        })
+
+        local backButton = widget.newButton({
+            id = "backButton",
+            x = w / 2,
+            y = h * .8,
+            width = w/1.4,
+            height = 2 * (h/20),
+            label = "BACK",
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
@@ -104,10 +123,10 @@ function scene:show( event )
 
         contactTable = widget.newTableView({
             left = w/8,
-            top = h * .1,
+            top = h * .05,
             isBounceEnabled = true,
             width = w/ 1.3,
-            height = h * .6,
+            height = h * .4,
             onRowRender = onRowRenderListener,
             fillColor = {default={255,255,255}, over={255,255,255}}
             
@@ -116,6 +135,7 @@ function scene:show( event )
         local rowHeight = 36
         local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
         local lineColor = { 0.5, 0.5, 0.5 }
+
         contactTable:insertRow(
         {
             isCategory = isCategory,
@@ -131,6 +151,7 @@ function scene:show( event )
 
         sceneGroup:insert( addButton )
         sceneGroup:insert( contactTable )
+        sceneGroup:insert( backButton )
         --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
     end
 end
