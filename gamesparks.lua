@@ -214,12 +214,6 @@ function v.setStatus( status )
     end)
 end
 
--- function v.addICEContact( Name, Number )
---     --Modify upload
---     print(Name)
---     print(Number)
--- end
-
 function v.getSMSMessageBody( safeVar )
     print("Get SMS Message Body")
     body = "Hello, this is " .. player.displayName .. "contacting you through Snugg, "
@@ -247,6 +241,7 @@ function v.getSMSMessageBody( safeVar )
 end
 
 function v.addICEContact( name, number )
+    print("Trying to add contacts")
     local addContactRequest = getLogEventRequest()
     addContactRequest:setEventKey( "Add_ICE" )
     addContactRequest:setEventAttribute( "CONTACT", {name=name, number=number} )
@@ -262,6 +257,7 @@ end
 
 function v.getICEContacts( callback )
     local eventRequest = getLogEventRequest()
+    print("Trying to get contacts ICE")
     eventRequest:setEventKey( "Get_ICE" )
     eventRequest:send( function(response)
         print( TAG, "Get ICE contacts response" )
