@@ -220,7 +220,30 @@ function v.addICEContact( Name, Number )
     print(Number)
 end
 
-function v.getICEContacts( )
+function v.getICEContacts(safeVar )
+    
     --Read contact list. Access as Bob[1].Name (or whatever it is)
+    
+    body = "Hello, this is " .. player.displayName .. "contacting you through Snugg, "
+    body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
+    body = body .. "This is an automatically generated message to inform everyone in this message that I am "
+    if (safeVar == -1) then
+        body = body .. "NOT SAFE \n\n" -- link or location (insert here)
+    elseif (safeVar == 1) then
+        body = body .. "SAFE \n\n" -- link or location (insert here)
+    end
+    body = body .. "at " --.. --insert location here. .. "\n\n"
+    body = body .. "The link above is my nearest location. \n\n"
+    body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
+
+    local optionsSMS =
+    {
+        to = { "14406548310", "16149662139"}, --temp... would be the phone number list
+        body = body   
+    }
+    
+    print(body)
+
+    return optionsSMS
 end
 return v

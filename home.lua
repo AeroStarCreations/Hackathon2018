@@ -17,16 +17,21 @@ local username
 local password
 local displayName
 
+
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
         print("First Condition")
         if (event.target.id == "safeButton") then
             print("I Am Safe")
             gamesparks.setStatus(1)
+            optionsSMS = gamesparks.getICEContacts(1)
+            native.showPopup("sms", optionsSMS)
             
         elseif (event.target.id == "notSafeButton") then
             print("That's Not Safe")
             gamesparks.setStatus(-1)
+            optionsSMS = gamesparks.getICEContacts(-1)
+            native.showPopup("sms", optionsSMS)
         elseif (event.target.id == "ICEButton") then
             print("Opening ICE List")
             composer.gotoScene("ICE")
