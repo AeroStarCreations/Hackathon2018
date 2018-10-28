@@ -17,16 +17,33 @@ local username
 local password
 local displayName
 
+local function sendSMSMessages ()
+    gamesparks.setStatus(safeVar)
+    body = gamesparks.getSMSMessageBody(safeVar)
+    gamesparks.getICEContacts(function(response)
+        local to = {}
+        for kNum,vNam in pairs(response) do 
+            to[#to+1] = kNum
+            -- option to include name. toName[#toName+1] = vNam
+        end
+        optionsSMS = {to, body}
+        --native.showPopup("sms",optionsSMS)
+    end)
+end
+
+    
+
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
         print("First Condition")
         if (event.target.id == "safeButton") then
             print("I Am Safe")
-            gamesparks.setStatus(1)
-            
+            sendSMSMessages(1)
+
         elseif (event.target.id == "notSafeButton") then
             print("That's Not Safe")
-            gamesparks.setStatus(-1)
+            sendSMSMessages(-1)
+
         elseif (event.target.id == "ICEButton") then
             print("Opening ICE List")
             composer.gotoScene("ICE")

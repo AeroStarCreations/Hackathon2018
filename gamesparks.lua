@@ -214,9 +214,65 @@ function v.setStatus( status )
     end)
 end
 
-function v.addICEContact( Name, Number )
-    print(Name)
-    print(Number)
+-- function v.addICEContact( Name, Number )
+--     --Modify upload
+--     print(Name)
+--     print(Number)
+-- end
+
+function v.getSMSMessageBody( safeVar )
+    print("Get SMS Message Body")
+    body = "Hello, this is " .. player.displayName .. "contacting you through Snugg, "
+    body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
+    body = body .. "This is an automatically generated message to inform everyone in this message that I am "
+    if (safeVar == -1) then
+        body = body .. "NOT SAFE \n\n" -- link or location (insert here)
+    elseif (safeVar == 1) then
+        body = body .. "SAFE \n\n" -- link or location (insert here)
+    end
+    body = body .. "at " --.. --insert location here. .. "\n\n"
+    body = body .. "The link above is my nearest location. \n\n"
+    body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
+
+    return body
+    
+
+    -- local optionsSMS =
+    -- {
+    --     to = { "14406548310", "16149662139"}, --temp... would be the phone number list
+    --     body = body   
+    -- }
+    
+    -- return optionsSMS
+end
+
+function v.addICEContact( name, number )
+    local addContactRequest = getLogEventRequest()
+    addContactRequest:setEventKey( "Add_ICE" )
+    addContactRequest:setEventAttribute( "CONTACT", {name=name, number=number} )
+    addContactRequest:send( function(response)
+        print( TAG, "Add ICE contact" )
+        if (not response:hasErrors()) then
+            print( TAG, "Add ICE contact SUCCESS" )
+        else
+            printErrors( response:getErrors() )
+        end
+    end)
+end
+
+function v.getICEContacts( callback )
+    local eventRequest = getLogEventRequest()
+    eventRequest:setEventKey( "Get_ICE" )
+    eventRequest:send( function(response)
+        print( TAG, "Get ICE contacts response" )
+        if (not response:hasErrors()) then
+            print( TAG, "GameSparks get ICE contacts SUCCESS" )
+            print(json.prettify(response:getScriptData()))
+            callback( response:getScriptData().Contacts )
+        else
+            printErrors( response:getErrors() )
+        end
+    end)
 end
 
 return v

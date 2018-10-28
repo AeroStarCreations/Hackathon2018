@@ -9,14 +9,6 @@ local composer = require("composer")
 local gamesparks = require("gamesparks")
 local localData = require("localData")
 
-local optionsSMS =
-{
-    to = { "14406548310"},
-    body = "I like turtles"
-}
-
-native.showPopup("sms", optionsSMS)
-
 ----
 -- Local data
 ----

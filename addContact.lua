@@ -47,6 +47,10 @@ local function handleButtonEvent( event )
             end
             native.setKeyboardFocus( nil )
         print(event.target.id .. " button pressed")
+        elseif (event.target.id == "cancelButton") then
+            contactName.text = ""
+            contactNumber.text = ""
+            composer.gotoScene("ICE")
         end
     elseif (event.phase == "began") then
         event.target:setFillColor(0,1,0)
@@ -121,9 +125,24 @@ function scene:show( event )
             fillColor = { default={ 0,191,255 }, over={ 0,191,255 } },
         })
 
+        local cancelButton = widget.newButton({
+            id = "cancelButton",
+            x = w / 2,
+            y = h * .6,
+            width = w/1.4,
+            height = 2 * contactName.height,
+            label = "Cancel",
+            fontSize = contactName.height,
+            shape = "roundedRect",
+            cornerRadius = contactName.height * 2 / 3,
+            onEvent = handleButtonEvent,
+            fillColor = { default={ 255,0,0 }, over={ 255,0,0 } },
+        })
+
         sceneGroup:insert( contactName )
         sceneGroup:insert( contactNumber )
         sceneGroup:insert( addButton )
+        sceneGroup:insert( cancelButton )
         
     end
 end
