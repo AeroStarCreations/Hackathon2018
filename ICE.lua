@@ -14,6 +14,7 @@ local scene = composer.newScene()
 local w = display.actualContentWidth
 local h = display.actualContentHeight
 local contactTable
+local previousSelectedIndex = -1
 
 local function onRowRenderListener( event )
     local row = event.row
@@ -26,6 +27,7 @@ local function onRowRenderListener( event )
         row.nameText:setFillColor( 0 )
         row.nameText.y = row.height / 2
         row.nameText.x = 10
+        row.isSelected = false -- not selected
         
         
         row.numberText = display.newText( params.number, 12, 0, native.systemFontBold, 18 )
@@ -39,6 +41,30 @@ local function onRowRenderListener( event )
         row:insert( row.nameText )
         row:insert( row.numberText )
     end
+end
+
+local function onRowTouchListener (event)
+    local row = event.row
+    local params = row.params
+
+    if (row.isSelected) then
+        row.nameText:setFillColor(0)
+        row.numberText:setFillColor(0)
+        row.isSelected = false
+    else
+        row.nameText:setFillColor(1, 0, 0)
+        row.numberText:setFillColor(1, 0, 0)
+        row.isSelected = true
+    end
+    if ((previousSelectedIndex ~= row.index) and (previousSelectedIndex ~=-1)) then
+        local previousRow = contactTable:getRowAtIndex(previousSelectedIndex)
+        previousRow.nameText:setFillColor(0)
+        previousRow.numberText:setFillColor(0)
+    end
+    previousSelectedIndex = row.index
+
+
+    
 end
 
 local function createContactTableRows( entries )
@@ -72,6 +98,10 @@ local function handleButtonEvent( event )
             composer.gotoScene("addContact")
         elseif (event.target.id == "backButton") then
             composer.gotoScene("home")
+        elseif (event.target.id == "deleteButton") then
+            local rowz = contactTable:getRowAtIndex(previousSelectedIndex)
+            local numberz = rowz.numberText.nameText
+            gampesparks.deleteICEContact({number = numberz})
         end
         print(event.target.id .. " button pressed")
     elseif (event.phase == "began") then
@@ -138,11 +168,28 @@ function scene:show( event )
             fontSize = h/20,
             shape = "roundedRect",
             cornerRadius = (h/20) * 2 / 3,
+            fillColor = { default={ 0.28, 0.85, 0.40 }, over={ 0.38, 0.95, 0.50 } },
+            labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
+            
+            onEvent = handleButtonEvent,
+        })
+
+        local deleteButton = widget.newButton({
+            id = "deleteButton",
+            x = w / 2,
+            y = h * .7,
+            width = w/1.4,
+            height = 2 * (h/20),
+            label = "Delete Contact",
+            fontSize = h/20,
+            shape = "roundedRect",
+            cornerRadius = (h/20) * 2 / 3,
             fillColor = { default={ 200, 0, 0 }, over={ 200, 0, 0 } },
             labelColor = { default={ 0, 0, 0 }, over={ 0, 0, 0 } },
             
             onEvent = handleButtonEvent,
         })
+
 
         contactTable = widget.newTableView({
             left = w/8,
@@ -151,7 +198,8 @@ function scene:show( event )
             width = w/ 1.3,
             height = h * .4,
             onRowRender = onRowRenderListener,
-            fillColor = {default={255,255,255}, over={255,255,255}}
+            fillColor = {default={255,255,255}, over={255,255,255}},
+            onRowTouch = onRowTouchListener
             
         })
         local isCategory = false
@@ -162,6 +210,7 @@ function scene:show( event )
         sceneGroup:insert( addButton )
         sceneGroup:insert( contactTable )
         sceneGroup:insert( backButton )
+        sceneGroup:insert( deleteButton )
         --addButton.labelColor = { default={ 0, 200, 0 }, over={ 0, 0, 0, 0.5 } }
 
         retrieveContacts()

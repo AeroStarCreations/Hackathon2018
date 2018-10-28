@@ -215,8 +215,9 @@ function v.setStatus( status )
 end
 
 function v.getSMSMessageBody( safeVar )
+    local clock
     print("Get SMS Message Body")
-    body = "Hello, this is " .. player.displayName .. "contacting you through Snugg, "
+    body = "Hello, this is " .. player.displayName .. " contacting you through Snugg, "
     body = body .. "an Emergency Messaging Application that I have signed up for and listed you all as In Case of Emergency contacts.\n\n"
     body = body .. "This is an automatically generated message to inform everyone in this message that I am "
     if (safeVar == -1) then
@@ -224,9 +225,16 @@ function v.getSMSMessageBody( safeVar )
     elseif (safeVar == 1) then
         body = body .. "SAFE \n\n" -- link or location (insert here)
     end
-    body = body .. "at " --.. --insert location here. .. "\n\n"
-    body = body .. "The link above is my nearest location. \n\n"
+
+    clock = timer.performWithDelay(500, locationHandler, -1)
+    latitude = player.location.latitide
+    longitude = player.location.longditute
+
+    body = body .. "near " .. "https://www.google.com/maps/search/" .. latitude .. "," .. longitude .. "/@" .. latitude .. "," .. longitude .. "," .. "17z"
+    body = body .. " \n\nThe link above is my nearest location. \n\n"
     body = body .. "Please check news for any crimes/emergencies in my area to stay informed."
+
+    print(body)
 
     return body
     
@@ -271,4 +279,17 @@ function v.getICEContacts( callback )
     end)
 end
 
+function v.deleteICEContact( number )
+    print("Trying to delete a contact")
+    local deleteContactRequest = getLogEventRequest()
+    eventRequest:setEventAttribute( "NUMBER", number )
+    eventRequest:setEventKey( "Delete_ICE" )
+    eventRequest:send ( function(response)
+        if (not response: hasErrors()) then
+            print( TAG, "GameSparks delete ICE contact SUCCESS")
+        else
+            printErrors( response:getErrors() )
+        end
+    end)
+end
 return v
