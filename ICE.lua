@@ -39,6 +39,28 @@ local function onRowRenderListener( event )
         row:insert( row.numberText )
     end
 end
+local function createContactTableRows( entries )
+    for number, name in pairs(entries) do
+        createTable:insertRow{
+            rowHeight = h / 20,
+            rowColor = { default={ 0.9, 0.9, 0.9 }, over={ 1, 0.5, 0, 0.2 } },
+            lineColor = { 69/255, 137/255, 247/255 },
+            params = {
+               name = name,
+               number = number
+              
+            }
+         }
+    end
+end
+
+local function retrieveContacts()
+    gamesparks.getICEContacts(function(response)
+        createContactTableRows(response)
+    end)
+    
+end
+
 
 local function handleButtonEvent( event )
     if (event.phase == "ended") then
@@ -83,6 +105,7 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen)
+        retrieveContacts()
  
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
@@ -136,18 +159,7 @@ function scene:show( event )
         local rowColor = { default={ 1, 1, 1 }, over={ 1, 0.5, 0, 0.2 } }
         local lineColor = { 0.5, 0.5, 0.5 }
 
-        contactTable:insertRow(
-        {
-            isCategory = isCategory,
-            rowHeight = rowHeight,
-            rowColor = rowColor,
-            lineColor = lineColor,
-            
-            params = {
-                name = "Nate",
-                number = "12345678902"
-            }  -- Include custom data in the row
-        })
+        
 
         sceneGroup:insert( addButton )
         sceneGroup:insert( contactTable )
