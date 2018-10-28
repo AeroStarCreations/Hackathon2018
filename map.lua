@@ -59,6 +59,8 @@ function scene:show( event )
                 print("location: "..locationText)
                 userMap:setCenter(currentLocation.latitide, currentLocation.longditute)
                 userMap:addMarker(currentLocation.latitide, currentLocation.longditute)
+                -- userMap:setCenter(39.9977, -83.0086)
+                -- userMap:addMarker(39.9977, -83.0086)
                 userMap.mapType = "standard"
             end
         end
@@ -95,7 +97,7 @@ function scene:hide( event )
  
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
- 
+        userMap:removeSelf()
     end
 end
  
